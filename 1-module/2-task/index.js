@@ -5,12 +5,11 @@ function print(text) {
   console.log(text);
 }
 
-/**
- * Эту функцию нужно поменять так,
- * чтобы функция sayHello работала корректно
- */
 function isValid(name) {
-  // ваш код...
+  if (name && !name.includes(' ') && name.length > 3) {
+    return true
+  }
+  return false;
 }
 
 function sayHello() {
