@@ -7,6 +7,7 @@ function initCarousel() {
     rightArrow.style.display = '';
 
     let slideNumber = 0;
+    const lastSlideNumber  = carousel.childElementCount - 1;
     const slideWidth = carousel.offsetWidth;
 
     function moveSlide(slideNumber) {
@@ -23,7 +24,7 @@ function initCarousel() {
     rightArrow.addEventListener("click", () => {
       slideNumber++;
       moveSlide(slideNumber);
-      if (slideNumber == 3) rightArrow.style.display = 'none'
+      if (slideNumber == lastSlideNumber) rightArrow.style.display = 'none'
       if (leftArrow.style.display == 'none') leftArrow.style.display = ''
     })
 }
