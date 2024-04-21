@@ -28,16 +28,21 @@ export default class ProductCard {
         </div>
     </div>`);
     
-    this.elem.getElementsByClassName('card__button')[0].addEventListener('click', (event) => {
-      let addProductEvent = new CustomEvent("product-add", {
-        detail: this.#product.id, 
-        bubbles: true 
-      });
-
-      this.elem.dispatchEvent(addProductEvent);
-    });
+    this.elem.getElementsByClassName('card__button')[0].addEventListener('click',this.#onAddClick);
 
     return this.elem;
   }
+
+  #onAddClick = (event) => {
+    const target = event.target;
+    const slide = target.closest('.carousel__slide');
+  
+    let addProductEvent = new CustomEvent("product-add", {
+      detail: this.#product.id, 
+      bubbles: true 
+    });
+
+    this.elem.dispatchEvent(addProductEvent);
+  };
 
 }

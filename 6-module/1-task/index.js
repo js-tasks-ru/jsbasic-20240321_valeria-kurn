@@ -50,12 +50,14 @@ export default class UserTable {
     this.#elem.innerHTML = userData;
 
     for (let button of this.#elem.querySelectorAll("button"))
-        button.addEventListener('click', (event) => {
-          const target = event.target;
-          const row = target.closest('tr');
-
-          row.remove();
-        });
+      button.addEventListener('click',this.#onRemoveClick);
         
   }
+
+  #onRemoveClick = (event) => {
+    const target = event.target;
+    const row = target.closest('tr');
+
+    row.remove();
+  };
 }
