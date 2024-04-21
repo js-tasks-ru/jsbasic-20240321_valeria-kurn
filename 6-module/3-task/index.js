@@ -43,8 +43,6 @@ export default class Carousel {
     for (let button of this.elem.getElementsByClassName('carousel__button'))
       button.addEventListener('click', this.#onAddClick);
 
-    
-
     return this.elem;
   }
 
