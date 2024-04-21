@@ -7,7 +7,7 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
     this.elem = this.#createSlide();
-    this.initCarousel();
+    this.#initCarousel();
   }
 
   get elem() {
@@ -43,6 +43,8 @@ export default class Carousel {
     for (let button of this.elem.getElementsByClassName('carousel__button'))
       button.addEventListener('click', this.#onAddClick);
 
+    
+
     return this.elem;
   }
 
@@ -58,7 +60,7 @@ export default class Carousel {
       this.elem.dispatchEvent(addProductEvent);
   };
 
-  initCarousel() {
+  #initCarousel() {
     const carousel = this.elem.querySelector('.carousel__inner');
     const leftArrow = this.elem.querySelector('.carousel__arrow_left');
     const rightArrow = this.elem.querySelector('.carousel__arrow_right');
@@ -68,26 +70,23 @@ export default class Carousel {
 
     let slideNumber = 0;
     const lastSlideNumber = carousel.childElementCount - 1;
-    const slideWidth = 500;
 
-    function moveSlide(slideNumber) {
+    function moveSlide(slideNumber, slideWidth) {
       carousel.style.transform = 'translateX(-' + slideWidth * slideNumber + 'px)';
     }
 
     leftArrow.addEventListener("click", () => {
       slideNumber--;
-      moveSlide(slideNumber);
+      moveSlide(slideNumber, carousel.offsetWidth);
       if (slideNumber == 0) leftArrow.style.display = 'none'
       if (rightArrow.style.display == 'none') rightArrow.style.display = ''
     })
 
     rightArrow.addEventListener("click", () => {
       slideNumber++;
-      moveSlide(slideNumber);
+      moveSlide(slideNumber, carousel.offsetWidth);
       if (slideNumber == lastSlideNumber) rightArrow.style.display = 'none'
       if (leftArrow.style.display == 'none') leftArrow.style.display = ''
     })
-
-}
-
+  }
 }
