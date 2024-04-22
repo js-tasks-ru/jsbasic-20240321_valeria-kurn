@@ -18,15 +18,14 @@ export default class UserTable {
 
   constructor(rows) {
     this.#rows = rows;
-    this.#elem = document.createElement("table");
-    this.createTable();
+    this.#elem = this.#render();
   }
 
   get elem() {
     return this.#elem;
   } 
 
-  createTable() {
+  #createUserTable() {
     let userData = `      
     <thead>
       <tr>
@@ -46,12 +45,18 @@ export default class UserTable {
         <td><button>X</button></td>
       </tr>              
             `).join("") + `</tbody>`;
-    
-    this.#elem.innerHTML = userData;
+      
+    return userData;
+  }
+
+  #render() {
+    this.#elem = document.createElement("table");
+    this.#elem.innerHTML = this.#createUserTable();
 
     for (let button of this.#elem.querySelectorAll("button"))
       button.addEventListener('click',this.#onRemoveClick);
-        
+
+    return this.#elem;    
   }
 
   #onRemoveClick = (event) => {

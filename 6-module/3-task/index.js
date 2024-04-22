@@ -6,7 +6,7 @@ export default class Carousel {
 
   constructor(slides) {
     this.slides = slides;
-    this.elem = this.#createSlide();
+    this.elem = this.#render();
     this.#initCarousel();
   }
 
@@ -14,8 +14,8 @@ export default class Carousel {
     return this.elem;
   } 
 
-  #createSlide(){
-    this.elem = createElement(`
+  #createSlide() {
+    let slide = createElement(`
     <!--Корневой элемент карусели-->
     <div class="carousel">
       <!--Кнопки переключения-->
@@ -38,6 +38,12 @@ export default class Carousel {
            </button>
       </div>
     </div>`).join("") + `</div>`);
+
+    return slide;
+  }
+
+  #render(){
+    this.elem = this.#createSlide();
 
     //Событие при клике на "+"
     for (let button of this.elem.getElementsByClassName('carousel__button'))
