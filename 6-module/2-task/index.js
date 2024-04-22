@@ -39,10 +39,7 @@ export default class ProductCard {
     return this.elem;
   }
 
-  #onAddClick = (event) => {
-    const target = event.target;
-    const slide = target.closest('.carousel__slide');
-  
+  #onAddClick = () => {
     let addProductEvent = new CustomEvent("product-add", {
       detail: this.#product.id, 
       bubbles: true 
