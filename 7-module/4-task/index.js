@@ -66,12 +66,11 @@ export default class StepSlider {
     return this.elem;
   }
 
-  #getCurrentValue = (event, segments) => {
+  #setCurrentValue(event, segments) {
     let left = event.clientX - this.elem.getBoundingClientRect().left; 
     let leftRelative = left / this.elem.offsetWidth;
     let approximateValue = leftRelative * segments;
-    let value = Math.round(approximateValue);
-    return value;
+    this.value = Math.round(approximateValue);
   }
 
   #moveSlider(valuePercents) {
@@ -94,7 +93,7 @@ export default class StepSlider {
 
   #onSliderClick = (event) => {
     let segments = this.steps - 1;
-    this.value = this.#getCurrentValue(event, segments);
+    this.#setCurrentValue(event, segments);
     let valuePercents = this.value / segments * 100;
 
     this.#moveSlider(valuePercents);
@@ -143,7 +142,6 @@ export default class StepSlider {
 
     document.addEventListener('pointerup', () => {
       document.removeEventListener('pointermove', this.#onPointerMove);
-      document.onmouseup = null;
       this.elem.classList.remove('slider_dragging');
 
       let dragOnSliderEvent = new CustomEvent('slider-change', { 
@@ -152,7 +150,7 @@ export default class StepSlider {
       })
   
       this.elem.dispatchEvent(dragOnSliderEvent);
-    });
+    }, {once: true});
 
   }
 }
