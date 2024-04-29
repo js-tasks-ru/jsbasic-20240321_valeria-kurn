@@ -81,7 +81,7 @@ export default class StepSlider {
     return leftRelative;
   }
 
-  #setCurrentValue(event, leftRelative, segments) {
+  #setCurrentValue(leftRelative, segments) {
     let approximateValue = leftRelative * segments;
     this.value = Math.round(approximateValue);
   }
@@ -109,7 +109,7 @@ export default class StepSlider {
   #onSliderClick = (event) => {
     let segments = this.steps - 1;
     let leftRelative = this.#getLeftRelative(event);
-    this.#setCurrentValue(event, leftRelative, segments);
+    this.#setCurrentValue(leftRelative, segments);
     let valuePercents = this.value / segments * 100;
     this.#moveSlider(valuePercents);
     this.#makeStepActive();
@@ -126,7 +126,7 @@ export default class StepSlider {
     let segments = this.steps - 1;
     let leftRelative = this.#getLeftRelative(event);
     this.#moveSlider(leftRelative * 100);
-    this.#setCurrentValue(event, leftRelative, segments);
+    this.#setCurrentValue(leftRelative, segments);
     this.#makeStepActive();
   }
 
