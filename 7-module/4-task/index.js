@@ -61,11 +61,12 @@ export default class StepSlider {
     this.elem.querySelector('.slider__value').textContent = this.value;
     this.elem.querySelector('.slider__steps').firstElementChild.classList.add('slider__step-active');
     this.elem.addEventListener('click', this.#onSliderClick);
+    this.elem.querySelector('.slider__thumb').addEventListener('pointerdown', this.#onPointerDown);
 
     return this.elem;
   }
 
-  #getCurrentValue(event, segments) {
+  #getCurrentValue = (event, segments) => {
     let left = event.clientX - this.elem.getBoundingClientRect().left; 
     let leftRelative = left / this.elem.offsetWidth;
     let approximateValue = leftRelative * segments;
@@ -106,4 +107,52 @@ export default class StepSlider {
     this.elem.dispatchEvent(clickOnSliderEvent);
   }
 
+  #onPointerMove = (event) => {
+    let left = event.clientX - this.elem.getBoundingClientRect().left; 
+    let leftRelative = left / this.elem.offsetWidth;
+    
+    if (leftRelative < 0) {
+      leftRelative = 0;
+    }
+    
+    if (leftRelative > 1) {
+      leftRelative = 1;
+    }
+    
+    let leftPercents = leftRelative * 100;
+
+    let thumb = this.elem.querySelector('.slider__thumb');
+    let progress = this.elem.querySelector('.slider__progress');
+
+    thumb.style.left = `${leftPercents}%`;
+    progress.style.width = `${leftPercents}%`;
+
+    let segments = this.steps - 1;
+    let approximateValue = leftRelative * segments;
+
+    this.value = Math.round(approximateValue);
+  }
+
+  #onPointerDown = (event) => {
+    let thumb = this.elem.querySelector('.slider__thumb');
+    this.elem.classList.add('slider_dragging');
+    thumb.ondragstart = () => false;
+    event.preventDefault();
+
+    document.addEventListener('pointermove', this.#onPointerMove);
+
+    document.addEventListener('pointerup', () => {
+      document.removeEventListener('pointermove', this.#onPointerMove);
+      document.onmouseup = null;
+      this.elem.classList.remove('slider_dragging');
+
+      let dragOnSliderEvent = new CustomEvent('slider-change', { 
+        detail: this.value, 
+        bubbles: true
+      })
+  
+      this.elem.dispatchEvent(dragOnSliderEvent);
+    });
+
+  }
 }
