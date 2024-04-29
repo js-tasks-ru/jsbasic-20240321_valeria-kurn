@@ -68,11 +68,28 @@ export default class StepSlider {
   #setCurrentValue(event, segments) {
     let left = event.clientX - this.elem.getBoundingClientRect().left; 
     let leftRelative = left / this.elem.offsetWidth;
+
+    if (leftRelative < 0) {
+      leftRelative = 0;
+    }
+    
+    if (leftRelative > 1) {
+      leftRelative = 1;
+    }
+
     let approximateValue = leftRelative * segments;
     this.value = Math.round(approximateValue);
   }
 
-  #moveSlider(valuePercents) {
+  #moveSlider(percent) {
+    let thumb = this.elem.querySelector('.slider__thumb');
+    let progress = this.elem.querySelector('.slider__progress');
+
+    thumb.style.left = `${percent}%`;
+    progress.style.width = `${percent}%`;
+  }
+
+  #makeStepActive() {
     this.elem.querySelector('.slider__value').textContent = this.value;
     
     let steps = this.elem.querySelector('.slider__steps').childNodes;
@@ -82,12 +99,6 @@ export default class StepSlider {
     });
 
     steps[this.value].classList.add('slider__step-active');
-    
-    let thumb = this.elem.querySelector('.slider__thumb');
-    let progress = this.elem.querySelector('.slider__progress');
-
-    thumb.style.left = `${valuePercents}%`;
-    progress.style.width = `${valuePercents}%`;
   }
 
   #onSliderClick = (event) => {
@@ -96,6 +107,7 @@ export default class StepSlider {
     let valuePercents = this.value / segments * 100;
 
     this.#moveSlider(valuePercents);
+    this.#makeStepActive();
 
     let clickOnSliderEvent = new CustomEvent('slider-change', { 
       detail: this.value, 

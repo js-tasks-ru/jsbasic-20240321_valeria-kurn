@@ -66,14 +66,27 @@ export default class StepSlider {
     return this.elem;
   }
 
-  #setCurrentValue(event, segments) {
+  #getLeftRelative(event) {
     let left = event.clientX - this.elem.getBoundingClientRect().left; 
     let leftRelative = left / this.elem.offsetWidth;
+
+    if (leftRelative < 0) {
+      leftRelative = 0;
+    }
+    
+    if (leftRelative > 1) {
+      leftRelative = 1;
+    }
+
+    return leftRelative;
+  }
+
+  #setCurrentValue(event, leftRelative, segments) {
     let approximateValue = leftRelative * segments;
     this.value = Math.round(approximateValue);
   }
 
-  #moveSlider(valuePercents) {
+  #makeStepActive() {
     this.elem.querySelector('.slider__value').textContent = this.value;
     
     let steps = this.elem.querySelector('.slider__steps').childNodes;
@@ -83,20 +96,24 @@ export default class StepSlider {
     });
 
     steps[this.value].classList.add('slider__step-active');
-    
+  }
+
+  #moveSlider(percent) {
     let thumb = this.elem.querySelector('.slider__thumb');
     let progress = this.elem.querySelector('.slider__progress');
 
-    thumb.style.left = `${valuePercents}%`;
-    progress.style.width = `${valuePercents}%`;
+    thumb.style.left = `${percent}%`;
+    progress.style.width = `${percent}%`;
   }
 
   #onSliderClick = (event) => {
     let segments = this.steps - 1;
-    this.#setCurrentValue(event, segments);
+    let leftRelative = this.#getLeftRelative(event);
+    this.#setCurrentValue(event, leftRelative, segments);
     let valuePercents = this.value / segments * 100;
 
     this.#moveSlider(valuePercents);
+    this.#makeStepActive();
 
     let clickOnSliderEvent = new CustomEvent('slider-change', { 
       detail: this.value, 
@@ -107,29 +124,12 @@ export default class StepSlider {
   }
 
   #onPointerMove = (event) => {
-    let left = event.clientX - this.elem.getBoundingClientRect().left; 
-    let leftRelative = left / this.elem.offsetWidth;
-    
-    if (leftRelative < 0) {
-      leftRelative = 0;
-    }
-    
-    if (leftRelative > 1) {
-      leftRelative = 1;
-    }
-    
-    let leftPercents = leftRelative * 100;
-
-    let thumb = this.elem.querySelector('.slider__thumb');
-    let progress = this.elem.querySelector('.slider__progress');
-
-    thumb.style.left = `${leftPercents}%`;
-    progress.style.width = `${leftPercents}%`;
-
     let segments = this.steps - 1;
-    let approximateValue = leftRelative * segments;
+    let leftRelative = this.#getLeftRelative(event);
+    this.#moveSlider(leftRelative * 100);
+    this.#setCurrentValue(event, leftRelative, segments);
 
-    this.value = Math.round(approximateValue);
+    this.#makeStepActive();
   }
 
   #onPointerDown = (event) => {
