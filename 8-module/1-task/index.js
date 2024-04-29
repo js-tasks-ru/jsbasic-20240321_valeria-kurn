@@ -38,25 +38,6 @@ export default class CartIcon {
     window.addEventListener('resize', () => this.updatePosition());
   }
 
-  #setDefaultCartStyle = () => {
-    Object.assign(this.elem.style, {
-      position: '',
-      top: '',
-      left: '',
-      zIndex: ''
-    });
-  }
-
-  #setFloatingCartStyle = (leftIndent) => {
-    Object.assign(this.elem.style, {
-      position: 'fixed',
-      top: '50px',
-      zIndex: 1000,
-      right: '20px',
-      left: leftIndent
-    });
-  }
-
   #isMobile() {
     return document.documentElement.clientWidth <= 767;
   }
