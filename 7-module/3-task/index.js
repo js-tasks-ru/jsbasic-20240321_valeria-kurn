@@ -104,8 +104,8 @@ export default class StepSlider {
   #onSliderClick = (event) => {
     let segments = this.steps - 1;
     this.#setCurrentValue(event, segments);
+    
     let valuePercents = this.value / segments * 100;
-
     this.#moveSlider(valuePercents);
     this.#makeStepActive();
 
