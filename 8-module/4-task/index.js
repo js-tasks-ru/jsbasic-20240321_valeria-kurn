@@ -166,7 +166,7 @@ export default class Cart {
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`); 
       
       productCount.innerHTML = cartItem.count;
-      productPrice.innerHTML = `€${infoPrice.toFixed(2)}`;
+      productPrice.innerHTML = `€${(cartItem.count * cartItem.product.price).toFixed(2)}`;
       infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
     }
   }
@@ -191,11 +191,11 @@ export default class Cart {
     this.cartItems = [];
     this.cartIcon.update(this);
 
-    this.#renderSuccessMessage();
+    this.modalBody.innerHTML = this.#successMessageTemplate();
   };
 
-  #renderSuccessMessage() {
-    this.modalBody.innerHTML = `
+  #successMessageTemplate() {
+    return `
     <div class="modal__body-inner">
       <p>
         Order successful! Your order is being cooked :) <br>
@@ -209,4 +209,3 @@ export default class Cart {
     this.cartIcon.elem.onclick = () => this.renderModal();
   }
 }
-
