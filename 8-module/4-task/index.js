@@ -121,7 +121,13 @@ export default class Cart {
 
   #onButtonClick = (event) => {
     const target = event.target;
+
+    if (!event.target.closest(".cart-counter__button")) {
+      return;
+    }
+
     const productId = target.closest("[data-product-id]").dataset.productId;
+
     this.updateProductCount(
       productId,
       event.target.closest(".cart-counter__button_plus") ? 1 : -1
@@ -156,14 +162,13 @@ export default class Cart {
     }
 
     let productId = cartItem.product.id;
-    let modalBody = document.body.querySelector('modal');
 
     if (cartItem.count == 0) {
-      modalBody.querySelector(`[data-product-id="${productId}"]`).remove();
+      this.modalBody.querySelector(`[data-product-id="${productId}"]`).remove();
     } else {
-      let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`); 
-      let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`); 
-      let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`); 
+      let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`); 
+      let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`); 
+      let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`); 
       
       productCount.innerHTML = cartItem.count;
       productPrice.innerHTML = `€${(cartItem.count * cartItem.product.price).toFixed(2)}`;
