@@ -144,7 +144,7 @@ export default class Cart {
     this.modalBody.append(this.renderOrderForm());
 
     this.modalBody.addEventListener('click', this.#onButtonClick);
-    this.modalBody.querySelector('form').onsubmit = (event) => this.onSubmit(event);
+    this.modalBody.querySelector('.cart-form').onsubmit = (event) => this.onSubmit(event);
 
     this.modal.setBody(this.modalBody);
   }
@@ -178,8 +178,7 @@ export default class Cart {
 
   async onSubmit(event) {
     event.preventDefault();
-
-    this.cartIcon.elem.onclick = () => this.renderModal();
+    
     this.modalBody.querySelector('button[type="submit"]').classList.add("is-loading");
 
     let form = this.modalBody.querySelector('.cart-form');
