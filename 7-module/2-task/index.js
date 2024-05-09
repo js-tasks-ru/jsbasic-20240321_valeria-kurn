@@ -13,7 +13,6 @@ export default class Modal {
 
   #createModal() {
     let modal = createElement(`
-    <div class="container">
     <!--Корневой элемент Modal-->
     <div class="modal">
       <!--Прозрачная подложка перекрывающая интерфейс-->
@@ -34,8 +33,7 @@ export default class Modal {
         </div>
       </div>
   
-      </div>
-    </div>`);
+      </div>`);
 
     return modal;
   }
