@@ -55,7 +55,20 @@ export default class CartIcon {
 
   // позиционировать иконку корзины на экране
   updatePosition() {
-    // ваш код ...
+    let isMobile = document.documentElement.clientWidth <= 767;
+
+    if (isMobile) {
+      Object.assign(this.elem.style, {
+      position: '',
+      top: '',
+      left: '',
+      zIndex: ''
+      });
+
+      return;
+    };
+
+
   }
 }
 ```
